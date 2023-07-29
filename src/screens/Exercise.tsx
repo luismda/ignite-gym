@@ -1,13 +1,23 @@
 import { TouchableOpacity } from 'react-native'
 import { Feather } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
-import { VStack, Icon, HStack, Heading, Text, Image, Box } from 'native-base'
+import {
+  VStack,
+  Icon,
+  HStack,
+  Heading,
+  Text,
+  Image,
+  Box,
+  ScrollView,
+} from 'native-base'
 
 import { AppNavigatorRoutesProps } from '@routes/app.routes'
 
 import BodySvg from '@assets/body.svg'
 import SeriesSvg from '@assets/series.svg'
 import RepetitionsSvg from '@assets/repetitions.svg'
+
 import { Button } from '@components/Button'
 
 export function Exercise() {
@@ -44,39 +54,41 @@ export function Exercise() {
         </HStack>
       </VStack>
 
-      <VStack p={8}>
-        <Image
-          source={{
-            uri: 'https://williamcarvalhoamaral.files.wordpress.com/2020/01/dorsal-blog.jpg',
-          }}
-          alt="Mulher executando o exercício de puxada frontal"
-          w="full"
-          h={80}
-          mb={3}
-          resizeMode="cover"
-          rounded="lg"
-        />
+      <ScrollView>
+        <VStack p={8}>
+          <Image
+            source={{
+              uri: 'https://williamcarvalhoamaral.files.wordpress.com/2020/01/dorsal-blog.jpg',
+            }}
+            alt="Mulher executando o exercício de puxada frontal"
+            w="full"
+            h={80}
+            mb={3}
+            resizeMode="cover"
+            rounded="lg"
+          />
 
-        <Box bg="gray.600" rounded="md" pb={4} px={4}>
-          <HStack alignItems="center" justifyContent="center" mb={6} mt={5}>
-            <HStack alignItems="center">
-              <SeriesSvg />
-              <Text color="gray.200" ml={2}>
-                3 séries
-              </Text>
+          <Box bg="gray.600" rounded="md" pb={4} px={4}>
+            <HStack alignItems="center" justifyContent="center" mb={6} mt={5}>
+              <HStack alignItems="center">
+                <SeriesSvg />
+                <Text color="gray.200" ml={2}>
+                  3 séries
+                </Text>
+              </HStack>
+
+              <HStack alignItems="center" ml={10}>
+                <RepetitionsSvg />
+                <Text color="gray.200" ml={2}>
+                  12 repetições
+                </Text>
+              </HStack>
             </HStack>
 
-            <HStack alignItems="center" ml={10}>
-              <RepetitionsSvg />
-              <Text color="gray.200" ml={2}>
-                12 repetições
-              </Text>
-            </HStack>
-          </HStack>
-
-          <Button title="Marcar como realizado" />
-        </Box>
-      </VStack>
+            <Button title="Marcar como realizado" />
+          </Box>
+        </VStack>
+      </ScrollView>
     </VStack>
   )
 }
