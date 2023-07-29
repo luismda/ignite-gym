@@ -27,7 +27,7 @@ export function Home() {
           <Group
             name={item}
             isSelected={item === selectedGroup}
-            onPress={() => setSelectedGroup(item)}
+            onPressIn={() => setSelectedGroup(item)}
           />
         )}
         horizontal

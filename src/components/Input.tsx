@@ -23,6 +23,10 @@ export function Input(props: InputProps) {
         borderWidth: 1,
         borderColor: 'green.500',
       }}
+      _disabled={{
+        bg: 'gray.600',
+        opacity: 0.5,
+      }}
       {...props}
     />
   )
