@@ -82,7 +82,7 @@ export function SignUp() {
         </Center>
 
         <Center>
-          <Heading color="gray.100" fontSize="xl" mb={6} fontFamily="heading">
+          <Heading color="gray.100" fontSize="xl" fontFamily="heading" mb={6}>
             Crie sua conta
           </Heading>
 
