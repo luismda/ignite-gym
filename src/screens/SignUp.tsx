@@ -1,5 +1,13 @@
 import { useNavigation } from '@react-navigation/native'
-import { Center, Heading, Image, Text, VStack, ScrollView } from 'native-base'
+import {
+  Center,
+  Heading,
+  Image,
+  Text,
+  VStack,
+  ScrollView,
+  useToast,
+} from 'native-base'
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -7,8 +15,11 @@ import { z } from 'zod'
 import LogoSvg from '@assets/logo.svg'
 import backgroundImg from '@assets/background.png'
 
+import { api } from '@services/api'
+
 import { Input } from '@components/Input'
 import { Button } from '@components/Button'
+import { AppError } from '@utils/AppError'
 
 type SignUpFormData = {
   name: string
@@ -43,6 +54,8 @@ const signUpFormSchema = z
 export function SignUp() {
   const navigation = useNavigation()
 
+  const toast = useToast()
+
   const {
     control,
     formState: { errors },
@@ -51,8 +64,27 @@ export function SignUp() {
     resolver: zodResolver(signUpFormSchema),
   })
 
-  function handleSignUp(data: SignUpFormData) {
-    console.log(data)
+  async function handleSignUp({ name, email, password }: SignUpFormData) {
+    try {
+      const response = await api.post('/users', {
+        name,
+        email,
+        password,
+      })
+
+      console.log(response.data)
+    } catch (error) {
+      const isAppError = error instanceof AppError
+      const title = isAppError
+        ? error.message
+        : 'Falha ao criar sua conta. Tente novamente.'
+
+      toast.show({
+        title,
+        placement: 'top',
+        bgColor: 'red.500',
+      })
+    }
   }
 
   function handleGoBack() {
