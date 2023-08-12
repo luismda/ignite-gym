@@ -21,13 +21,6 @@ import { Input } from '@components/Input'
 import { Button } from '@components/Button'
 import { AppError } from '@utils/AppError'
 
-type SignUpFormData = {
-  name: string
-  email: string
-  password: string
-  confirmPassword: string
-}
-
 const signUpFormSchema = z
   .object({
     name: z
@@ -50,6 +43,8 @@ const signUpFormSchema = z
     path: ['confirmPassword'],
     message: 'A confirmação da senha não corresponde.',
   })
+
+type SignUpFormData = z.infer<typeof signUpFormSchema>
 
 export function SignUp() {
   const navigation = useNavigation()
