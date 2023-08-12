@@ -7,6 +7,8 @@ import {
   Roboto_700Bold,
 } from '@expo-google-fonts/roboto'
 
+import { AuthContextProvider } from '@contexts/AuthContext'
+
 import { THEME } from '@theme/index'
 
 import { Routes } from '@routes/index'
@@ -23,7 +25,9 @@ export default function App() {
         translucent
       />
 
-      {hasLoadedFonts ? <Routes /> : <Loading />}
+      <AuthContextProvider>
+        {hasLoadedFonts ? <Routes /> : <Loading />}
+      </AuthContextProvider>
     </NativeBaseProvider>
   )
 }
