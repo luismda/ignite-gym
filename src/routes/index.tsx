@@ -10,15 +10,15 @@ export function Routes() {
   const { user } = useAuth()
   const { colors } = useTheme()
 
-  console.log(user)
-
   const theme = DefaultTheme
   theme.colors.background = colors.gray[700]
+
+  const isUserAuthenticated = !!user.id
 
   return (
     <Box flex={1} bg="gray.700">
       <NavigationContainer theme={theme}>
-        <AuthRoutes />
+        {isUserAuthenticated ? <AppRoutes /> : <AuthRoutes />}
       </NavigationContainer>
     </Box>
   )

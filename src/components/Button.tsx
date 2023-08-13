@@ -15,6 +15,10 @@ export function Button({ title, variant = 'solid', ...rest }: ButtonProps) {
       borderWidth={variant === 'outline' ? 1 : 0}
       borderColor="green.500"
       _pressed={{ bg: variant === 'outline' ? 'gray.500' : 'green.500' }}
+      _loading={{
+        bg: variant === 'outline' ? 'gray.500' : 'green.500',
+        opacity: 0.6,
+      }}
       {...rest}
     >
       <Text

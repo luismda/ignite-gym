@@ -3,7 +3,7 @@ import axios from 'axios'
 import { AppError } from '@utils/AppError'
 
 const api = axios.create({
-  baseURL: 'http://192.168.0.12:3333',
+  baseURL: 'http://192.168.0.14:3333',
 })
 
 api.interceptors.response.use(
