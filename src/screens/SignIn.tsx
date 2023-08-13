@@ -23,7 +23,6 @@ import { useAuth } from '@hooks/useAuth'
 
 import { Input } from '@components/Input'
 import { Button } from '@components/Button'
-import { useState } from 'react'
 
 const signInFormSchema = z.object({
   email: z
@@ -35,8 +34,6 @@ const signInFormSchema = z.object({
 type SignInFormData = z.infer<typeof signInFormSchema>
 
 export function SignIn() {
-  const [isLoading, setIsLoading] = useState(false)
-
   const { signIn } = useAuth()
 
   const toast = useToast()
@@ -45,15 +42,13 @@ export function SignIn() {
 
   const {
     control,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     handleSubmit,
   } = useForm<SignInFormData>({
     resolver: zodResolver(signInFormSchema),
   })
 
   async function handleSignIn({ email, password }: SignInFormData) {
-    setIsLoading(true)
-
     try {
       await signIn(email, password)
     } catch (error) {
@@ -68,8 +63,6 @@ export function SignIn() {
         placement: 'top',
         bgColor: 'red.500',
       })
-
-      setIsLoading(false)
     }
   }
 
@@ -135,7 +128,7 @@ export function SignIn() {
 
           <Button
             title="Acessar"
-            isLoading={isLoading}
+            isLoading={isSubmitting}
             onPress={handleSubmit(handleSignIn)}
           />
         </Center>
