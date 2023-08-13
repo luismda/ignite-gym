@@ -15,11 +15,14 @@ import { z } from 'zod'
 import LogoSvg from '@assets/logo.svg'
 import backgroundImg from '@assets/background.png'
 
+import { useAuth } from '@hooks/useAuth'
+
+import { AppError } from '@utils/AppError'
+
 import { api } from '@services/api'
 
 import { Input } from '@components/Input'
 import { Button } from '@components/Button'
-import { AppError } from '@utils/AppError'
 
 const signUpFormSchema = z
   .object({
@@ -49,11 +52,12 @@ type SignUpFormData = z.infer<typeof signUpFormSchema>
 export function SignUp() {
   const navigation = useNavigation()
 
+  const { signIn } = useAuth()
   const toast = useToast()
 
   const {
     control,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     handleSubmit,
   } = useForm<SignUpFormData>({
     resolver: zodResolver(signUpFormSchema),
@@ -61,13 +65,13 @@ export function SignUp() {
 
   async function handleSignUp({ name, email, password }: SignUpFormData) {
     try {
-      const response = await api.post('/users', {
+      await api.post('/users', {
         name,
         email,
         password,
       })
 
-      console.log(response.data)
+      await signIn(email, password)
     } catch (error) {
       const isAppError = error instanceof AppError
       const title = isAppError
@@ -173,6 +177,7 @@ export function SignUp() {
 
           <Button
             title="Criar e acessar"
+            isLoading={isSubmitting}
             onPress={handleSubmit(handleSignUp)}
           />
         </Center>
