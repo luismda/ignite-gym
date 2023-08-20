@@ -15,6 +15,8 @@ import * as ImagePicker from 'expo-image-picker'
 import * as FileSystem from 'expo-file-system'
 import { z } from 'zod'
 
+import defaultUserPhotoImg from '@assets/userPhotoDefault.png'
+
 import { AppError } from '@utils/AppError'
 
 import { api } from '@services/api'
@@ -117,7 +119,6 @@ type EditProfileFormData = z.infer<typeof editProfileFormSchema>
 
 export function Profile() {
   const [hasPhotoLoaded, setHasPhotoLoaded] = useState(true)
-  const [userPhoto, setUserPhoto] = useState('https://github.com/luismda.png')
 
   const toast = useToast()
 
@@ -169,7 +170,37 @@ export function Profile() {
           return
         }
 
-        setUserPhoto(photo.uri)
+        const fileExtension = photo.uri.split('.').pop()
+
+        const photoFile = {
+          name: `${user.name}.${fileExtension}`.toLowerCase(),
+          uri: photo.uri,
+          type: `${photo.type}/${fileExtension}`,
+        } as any
+
+        const uploadUserPhotoForm = new FormData()
+        uploadUserPhotoForm.append('avatar', photoFile)
+
+        const updatedAvatarResponse = await api.patch(
+          '/users/avatar',
+          uploadUserPhotoForm,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          },
+        )
+
+        updateUserProfile({
+          ...user,
+          avatar: updatedAvatarResponse.data.avatar,
+        })
+
+        toast.show({
+          title: 'Foto atualizada!',
+          placement: 'top',
+          bgColor: 'green.700',
+        })
       }
     } catch (error) {
       toast.show({
@@ -233,8 +264,12 @@ export function Profile() {
             isLoaded={hasPhotoLoaded}
           >
             <UserPhoto
-              source={{ uri: userPhoto }}
-              alt="Luís Miguel"
+              source={
+                user.avatar
+                  ? { uri: `${api.defaults.baseURL}/avatar/${user.avatar}` }
+                  : defaultUserPhotoImg
+              }
+              alt={user.name}
               size={33}
             />
           </Skeleton>
@@ -272,6 +307,7 @@ export function Profile() {
               <Input
                 bg="gray.600"
                 placeholder="E-mail"
+                autoCorrect={false}
                 value={value}
                 isDisabled
               />
