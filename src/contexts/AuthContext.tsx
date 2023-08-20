@@ -1,4 +1,10 @@
-import { ReactNode, createContext, useEffect, useState } from 'react'
+import {
+  ReactNode,
+  createContext,
+  useEffect,
+  useCallback,
+  useState,
+} from 'react'
 
 import { UserDTO } from '@dtos/UserDTO'
 import { UserAuthTokenDTO } from '@dtos/UserAuthTokenDTO'
@@ -104,7 +110,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     await saveUserStorage(updatedUser)
   }
 
-  async function loadUserData() {
+  const loadUserData = useCallback(async () => {
     setIsUserStorageDataLoading(true)
 
     try {
@@ -118,11 +124,11 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     } finally {
       setIsUserStorageDataLoading(false)
     }
-  }
+  }, [])
 
   useEffect(() => {
     loadUserData()
-  }, [])
+  }, [loadUserData])
 
   useEffect(() => {
     const subscribe = api.registerInterceptTokenManager(signOut)

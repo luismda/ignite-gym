@@ -29,7 +29,7 @@ export function Home() {
     navigation.navigate('exercise', { exerciseId })
   }
 
-  async function fetchGroups() {
+  const fetchGroups = useCallback(async () => {
     try {
       const response = await api.get('/groups')
       const groupsResponse = response.data
@@ -49,9 +49,9 @@ export function Home() {
         bgColor: 'red.500',
       })
     }
-  }
+  }, [toast])
 
-  async function fetchExercisesByGroup() {
+  const fetchExercisesByGroup = useCallback(async () => {
     setIsLoading(true)
 
     try {
@@ -73,16 +73,16 @@ export function Home() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [selectedGroup, toast])
 
   useEffect(() => {
     fetchGroups()
-  }, [])
+  }, [fetchGroups])
 
   useFocusEffect(
     useCallback(() => {
       fetchExercisesByGroup()
-    }, [selectedGroup]),
+    }, [fetchExercisesByGroup]),
   )
 
   return (

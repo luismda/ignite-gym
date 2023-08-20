@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useCallback, useState } from 'react'
 import { TouchableOpacity } from 'react-native'
 import { Feather } from '@expo/vector-icons'
 import { useNavigation, useRoute } from '@react-navigation/native'
@@ -46,7 +46,7 @@ export function Exercise() {
 
   const toast = useToast()
 
-  async function fetchExerciseDetails() {
+  const fetchExerciseDetails = useCallback(async () => {
     setIsLoading(true)
 
     try {
@@ -68,7 +68,7 @@ export function Exercise() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [exerciseId, toast])
 
   async function handleSaveCompletedExercise() {
     setIsSavingCompletedExercise(true)
@@ -106,7 +106,7 @@ export function Exercise() {
 
   useEffect(() => {
     fetchExerciseDetails()
-  }, [exerciseId])
+  }, [fetchExerciseDetails])
 
   return (
     <VStack flex={1}>

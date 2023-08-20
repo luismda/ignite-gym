@@ -18,7 +18,7 @@ export function History() {
 
   const toast = useToast()
 
-  async function fetchHistory() {
+  const fetchHistory = useCallback(async () => {
     setIsLoading(true)
 
     try {
@@ -40,12 +40,12 @@ export function History() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [toast])
 
   useFocusEffect(
     useCallback(() => {
       fetchHistory()
-    }, []),
+    }, [fetchHistory]),
   )
 
   return (
