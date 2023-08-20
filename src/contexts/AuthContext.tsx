@@ -1,6 +1,8 @@
 import { ReactNode, createContext, useEffect, useState } from 'react'
 
 import { UserDTO } from '@dtos/UserDTO'
+import { UserAuthTokenDTO } from '@dtos/UserAuthTokenDTO'
+
 import { api } from '@services/api'
 
 import {
@@ -27,6 +29,10 @@ interface AuthContextProviderProps {
   children: ReactNode
 }
 
+interface SaveUserDataStorageProps extends UserAuthTokenDTO {
+  userData: UserDTO
+}
+
 export const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 
 export function AuthContextProvider({ children }: AuthContextProviderProps) {
@@ -37,33 +43,46 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     api.defaults.headers.common.Authorization = `Bearer ${token}`
   }
 
-  async function saveUserDataStorage(userData: UserDTO, token: string) {
+  async function saveUserDataStorage({
+    userData,
+    accessToken,
+    refreshToken,
+  }: SaveUserDataStorageProps) {
     setIsUserStorageDataLoading(true)
 
     try {
       await saveUserStorage(userData)
-      await saveAuthTokenStorage(token)
+
+      await saveAuthTokenStorage({
+        accessToken,
+        refreshToken,
+      })
     } finally {
       setIsUserStorageDataLoading(false)
     }
   }
 
   async function signIn(email: string, password: string) {
-    const { data } = await api.post<{ user: UserDTO; token: string }>(
-      '/sessions',
-      {
-        email,
-        password,
-      },
-    )
+    const { data } = await api.post('/sessions', {
+      email,
+      password,
+    })
 
-    const userAuthenticated = data.user
-    const userToken = data.token
+    const {
+      user: userAuthenticated,
+      token: accessToken,
+      refresh_token: refreshToken,
+    } = data
 
-    if (userAuthenticated && userToken) {
+    if (userAuthenticated && accessToken && refreshToken) {
       setUser(userAuthenticated)
-      saveApiAuthorizationToken(userToken)
-      saveUserDataStorage(userAuthenticated, userToken)
+      saveApiAuthorizationToken(accessToken)
+
+      saveUserDataStorage({
+        userData: userAuthenticated,
+        accessToken,
+        refreshToken,
+      })
     }
   }
 
@@ -90,11 +109,11 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
 
     try {
       const userLogged = await getUserStorage()
-      const token = await getAuthTokenStorage()
+      const { accessToken } = await getAuthTokenStorage()
 
-      if (userLogged.id && token) {
+      if (userLogged.id && accessToken) {
         setUser(userLogged)
-        saveApiAuthorizationToken(token)
+        saveApiAuthorizationToken(accessToken)
       }
     } finally {
       setIsUserStorageDataLoading(false)
@@ -103,6 +122,14 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
 
   useEffect(() => {
     loadUserData()
+  }, [])
+
+  useEffect(() => {
+    const subscribe = api.registerInterceptTokenManager(signOut)
+
+    return () => {
+      subscribe()
+    }
   }, [])
 
   return (
