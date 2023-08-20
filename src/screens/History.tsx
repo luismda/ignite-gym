@@ -40,7 +40,7 @@ export function History() {
     } finally {
       setIsLoading(false)
     }
-  }, [toast])
+  }, [])
 
   useFocusEffect(
     useCallback(() => {
