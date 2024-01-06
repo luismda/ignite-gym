@@ -19,7 +19,7 @@ interface APIInstanceProps extends AxiosInstance {
 }
 
 const api = axios.create({
-  baseURL: 'http://192.168.0.14:3333',
+  baseURL: process.env.EXPO_PUBLIC_API_URL,
 }) as APIInstanceProps
 
 let failedQueue: PromiseFailedQueueType[] = []
