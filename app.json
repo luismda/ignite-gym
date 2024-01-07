@@ -27,10 +27,11 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
+      "expo-image-picker",
       [
-        "expo-image-picker",
+        "onesignal-expo-plugin",
         {
-          "photosPermission": "The app accesses your photos to let you share them with your friends."
+          "mode": "development"
         }
       ]
     ]
