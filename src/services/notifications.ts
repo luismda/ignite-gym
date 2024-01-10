@@ -11,3 +11,12 @@ if (!appId) {
 }
 
 OneSignal.setAppId(appId)
+
+export function createUserEmailNotificationTag(email: string) {
+  OneSignal.sendTag('user_email', email)
+}
+
+export function createUserLastExerciseDateNotificationTag() {
+  const lastExerciseDate = new Date().toISOString()
+  OneSignal.sendTag('user_last_exercise_date', lastExerciseDate)
+}

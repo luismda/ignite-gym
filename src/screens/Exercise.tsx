@@ -28,6 +28,7 @@ import RepetitionsSvg from '@assets/repetitions.svg'
 
 import { Button } from '@components/Button'
 import { Loading } from '@components/Loading'
+import { createUserLastExerciseDateNotificationTag } from '@services/notifications'
 
 type RouteParams = {
   exerciseId: string
@@ -75,6 +76,7 @@ export function Exercise() {
 
     try {
       await api.post('/history', { exercise_id: exerciseId })
+      createUserLastExerciseDateNotificationTag()
 
       toast.show({
         title: 'Parabéns! Exercício salvo no seu histórico.',
