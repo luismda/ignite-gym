@@ -10,6 +10,7 @@ import { UserDTO } from '@dtos/UserDTO'
 import { UserAuthTokenDTO } from '@dtos/UserAuthTokenDTO'
 
 import { api } from '@services/api'
+import { createUserEmailNotificationTag } from '@services/notifications'
 
 import {
   getUserStorage,
@@ -83,6 +84,8 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     if (userAuthenticated && accessToken && refreshToken) {
       setUser(userAuthenticated)
       saveApiAuthorizationToken(accessToken)
+
+      createUserEmailNotificationTag(email)
 
       saveUserDataStorage({
         userData: userAuthenticated,

@@ -9,6 +9,8 @@ import HomeSvg from '@assets/home.svg'
 import HistorySvg from '@assets/history.svg'
 import ProfileSvg from '@assets/profile.svg'
 
+import { CommonRoutes } from './common.routes'
+
 import { Home } from '@screens/Home'
 import { History } from '@screens/History'
 import { Profile } from '@screens/Profile'
@@ -19,6 +21,7 @@ type AppRoutes = {
   history: undefined
   profile: undefined
   exercise: { exerciseId: string }
+  common: undefined
 }
 
 export type AppNavigatorRoutesProps = BottomTabNavigationProp<AppRoutes>
@@ -79,6 +82,12 @@ export function AppRoutes() {
       <Screen
         name="exercise"
         component={Exercise}
+        options={{ tabBarButton: () => null }}
+      />
+
+      <Screen
+        name="common"
+        component={CommonRoutes}
         options={{ tabBarButton: () => null }}
       />
     </Navigator>

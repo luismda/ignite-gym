@@ -8,6 +8,32 @@ import { AppRoutes } from './app.routes'
 
 import { Loading } from '@components/Loading'
 
+const linking = {
+  prefixes: ['com.luismda.ignitegym://'],
+  config: {
+    screens: {
+      signUp: {
+        path: 'signUp',
+      },
+      history: {
+        path: 'history',
+      },
+      exercise: {
+        path: 'exercise/:exerciseId',
+        parse: {
+          exerciseId: (exerciseId: string) => exerciseId,
+        },
+      },
+      common: {
+        path: '',
+        screens: {
+          notFound: '*',
+        },
+      },
+    },
+  },
+}
+
 export function Routes() {
   const { user, isUserStorageDataLoading } = useAuth()
   const { colors } = useTheme()
@@ -23,7 +49,7 @@ export function Routes() {
 
   return (
     <Box flex={1} bg="gray.700">
-      <NavigationContainer theme={theme}>
+      <NavigationContainer linking={linking} theme={theme}>
         {isUserAuthenticated ? <AppRoutes /> : <AuthRoutes />}
       </NavigationContainer>
     </Box>

@@ -1,3 +1,5 @@
+import '@services/notifications'
+
 import { StatusBar } from 'react-native'
 import { NativeBaseProvider } from 'native-base'
 
