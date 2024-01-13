@@ -19,6 +19,8 @@ In addition, you can mark a exercise as completed and view all completed exercis
 
 This app uses a refresh token strategy to keep the user signed in and the auth flow uses a JWT.
 
+The **push notification strategy** was also implemented to remind the user to practice or even notify about a new exercise. Additionally, **deep linking** was also implemented to redirect based on notifications.
+
 The project was developed using these technologies:
 
 - TypeScript
@@ -35,8 +37,6 @@ The project was developed using these technologies:
 - Zod
 
 Finally, this project was developed in the React Native training in the [**Rocketseat**](https://github.com/rocketseat-education) **Ignite** course. The main purpose of this app was to practice using a **component library, such as NativeBase, and bottom tab navigation, as well as backend integration, with authentication flow**. In addition, it was possible to practice using the **Context API and React Hooks**, always following good coding practices.
-
-The **push notification strategy** was also implemented to remind the user to practice or even notify about a new exercise. Additionally, **deep linking** was also implemented to redirect based on notifications.
 
 [**Access the project layout in Figma**](https://www.figma.com/community/file/1163926136397847279)
 
