@@ -24,6 +24,12 @@ const linking = {
           exerciseId: (exerciseId: string) => exerciseId,
         },
       },
+      common: {
+        path: '',
+        screens: {
+          notFound: '*',
+        },
+      },
     },
   },
 }
