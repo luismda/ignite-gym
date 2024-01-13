@@ -23,16 +23,20 @@ The project was developed using these technologies:
 
 - TypeScript
 - React Native
-- Expo Managed Workflow
+- Expo Dev Client
 - Expo Image Picker (*used to select and edit user avatar*)
 - NativeBase (*component library*)
 - React Navigation (*stack and tab navigation*)
 - Axios (*HTTP client*)
 - Async Storage (*used to local storage of user and token*)
+- One Signal (*used to send push notifications*)
+- Firebase Cloud Messaging (*used with One Signal to send notifications on Android devices*)
 - React Hook Form
 - Zod
 
 Finally, this project was developed in the React Native training in the [**Rocketseat**](https://github.com/rocketseat-education) **Ignite** course. The main purpose of this app was to practice using a **component library, such as NativeBase, and bottom tab navigation, as well as backend integration, with authentication flow**. In addition, it was possible to practice using the **Context API and React Hooks**, always following good coding practices.
+
+The **push notification strategy** was also implemented to remind the user to practice or even notify about a new exercise. Additionally, **deep linking** was also implemented to redirect based on notifications.
 
 [**Access the project layout in Figma**](https://www.figma.com/community/file/1163926136397847279)
 
@@ -67,9 +71,17 @@ npm i
 npm start
 ```
 
-4. Configure the `baseURL` in `src/services/api.ts` using the your local IP address
+4. Configure the env variables following the `.env.example` file (API URL and One Signal App ID)
 
-5. Run app:
+5. Run development build:
+
+```sh
+npm run android
+# or
+npm run ios
+```
+
+6. Start app
 
 ```sh
 npm start
